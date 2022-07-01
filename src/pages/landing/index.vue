@@ -24,7 +24,7 @@ onMounted(() => {
 <template>
   <Navbar @open="isModalShow = true" />
   <Banner>
-    <div id="home" ref="landing" class="flex justify-between py-0 px-3 w-full">
+    <div id="home" ref="landing" class="bg-gray-200 flex justify-between py-0 px-3 w-full">
       <div class="flex flex-col items-center justify-center w-full">
         <img width="350" height="380" :src="Obat" alt="" />
         <h1 class="text-4xl font-bold text-black-900 py-8 items-center">

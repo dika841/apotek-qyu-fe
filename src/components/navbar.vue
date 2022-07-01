@@ -11,7 +11,7 @@ const openModal = () => {
 </script>
 <template>
   <nav
-    class="flex z-45 md:sticky justify-center items-center top-0 w-full bg-gray-200 p-4 h-auto"
+    class="flex lg:sticky justify-center items-center top-0 w-full  h-15 bg-blue-300"
   >
     <div class="flex gap-x-2 items-center w-full">
       <img width="40" :src="Protect" alt="" />
