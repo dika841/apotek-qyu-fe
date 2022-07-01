@@ -1,13 +1,14 @@
+<script setup>
+import  register from "../../assets/illustration/Register.svg"
+
+</script>
+
 <template>
   <section class="h-screen">
-    <div class="bg-gray-100 text-gray-500 w-full overflow-hidden h-screen">
+    <div class="bg-blue-300 text-gray-500 w-full overflow-hidden h-screen">
         <div class="md:flex  w-full h-screen">
             <div class="hidden order-2 md:block w-1/2  py-10 px-10">
-                <img
-            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-            class="w-full"
-            alt="Sample image"
-          />
+             <img width="500" :src="register" alt="" />
             </div>
             <div class="w-full md:w-1/2 py-10 px-5 md:px-10">
                 <div class="text-center mb-10">
@@ -55,6 +56,7 @@
                     <div class="flex -mx-3">
                         <div class="w-full px-3 mb-5">
                             <button class="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold">REGISTER NOW</button>
+                            
                         </div>
                     </div>
                 </div>
