@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^1.35.4",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.4.19",
     "vite-plugin-windicss": "^1.8.6",

@@ -23,7 +23,7 @@ const routes = [
     component: Admin,
   },
   {
-    path: "/customer",
+    path: "/customer/:id",
     component: Customer,
   },
 ];
