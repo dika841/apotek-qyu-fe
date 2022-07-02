@@ -1,21 +1,28 @@
 <script setup>
 import Protect from "../../assets/illustration/protect.png";
-import keranjang from "../../assets/keranjang.svg";
+import keranjang from "../../assets/keranjang.svg"
 import { supabase } from "../../supabase";
-import { useRoute } from "vue-router";
 import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+const obat = ref({});
+const getObat= async () => {
+  const { data} = await supabase.from("obat").select("*");
+  obat.value = data;
+};
 const route = useRoute();
 const id = route.params.id;
-const users = ref();
+const users = ref("");
 const getUsers = async () => {
-  const { data } = await supabase.from("user").select("*").eq("id", id);
-  const username = data?.map(x => x.name)
+  const { data } = await supabase.from("user").select("name").eq("id", id);
+  const username = data.map(x => x.name)
   users.value = username
 };
-
 onMounted(() => {
   getUsers();
+  getObat();
 });
+
+
 
 const isDropdownShow = ref(false);
 const isUserMenu = ref(false);
@@ -56,7 +63,7 @@ const isUserMenu = ref(false);
       <div
         v-if="isDropdownShow"
         id="dropdownLarge"
-        class="z-10 bg-white fixed top-25 left-60 divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+        class="z-10 bg-white absolute top-25 left-60 divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
       >
         <ul
           class="py-1 text-sm text-gray-700 dark:text-gray-200"
@@ -159,30 +166,38 @@ const isUserMenu = ref(false);
           </li>
         </ul>
         <div class="py-1">
-          <a
+          <router-link to="/">
+
+            <a
             href="#"
             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
             >Sign out</a
           >
+          </router-link>
         </div>
       </div>
     </div>
-    <div class="grid grid-cols-4 gap-5 mt-40">
+    <div 
+    class="grid grid-cols-4 gap-5 mt-40">
+    
       <!-- produk 1-->
+    
       <div
+      v-for="(data, index) in obat"
+              :key="obat.id"
         class="hover:scale-105 flex flex-col p-2 bg-white shadow-lg cursor-pointer rounded transform duration-300 ease-in-out"
       >
-        <div classs="flex justify-center">
+        <div classs="flex justify-center ">
           <img
-            class="mx-4"
-            width="200"
-            src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//81/MTA-12426111/novell_novell-cooling-5-spray-cool-mint-obat-sariawan-dan-sakit-tenggorokan--15-ml-_full02.jpg"
+            class="mx-4 w-auto h-50"
+            
+            :src="data.gambar"
           />
         </div>
         <p class="font-semibold text-lg my-2 text-red-700 text-center">
-          Rp.20.000
+          {{data.harga}}
         </p>
-        <p class="font-light text-sm text-center">Obat Sakit Gigi Ponstan</p>
+        <p class="font-light text-sm text-center">{{data.nama_obat}}</p>
         <button
           type="button"
           class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
@@ -196,118 +211,7 @@ const isUserMenu = ref(false);
           Tambah Keranjang
         </button>
       </div>
-      <!-- produk 2-->
-      <div
-        class="hover:scale-105 flex flex-col p-2 bg-white shadow-lg cursor-pointer rounded transform duration-300 ease-in-out"
-      >
-        <div classs="flex justify-center">
-          <img
-            class="mx-4"
-            width="200"
-            src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//81/MTA-12426111/novell_novell-cooling-5-spray-cool-mint-obat-sariawan-dan-sakit-tenggorokan--15-ml-_full02.jpg"
-          />
-        </div>
-        <p class="font-semibold text-lg my-2 text-red-700 text-center">
-          Rp.8.000
-        </p>
-        <p class="font-light text-sm text-center">Obat Sakit Gigi Ponstan</p>
-        <button
-          type="button"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-        >
-          Beli sekarang
-        </button>
-        <button
-          type="button"
-          class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-        >
-          Tambah Keranjang
-        </button>
-      </div>
-      <!-- produk 3-->
-      <div
-        class="hover:scale-105 flex flex-col p-2 bg-white shadow-lg cursor-pointer rounded transform duration-300 ease-in-out"
-      >
-        <div classs="flex justify-center">
-          <img
-            class="mx-4"
-            width="200"
-            src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//81/MTA-12426111/novell_novell-cooling-5-spray-cool-mint-obat-sariawan-dan-sakit-tenggorokan--15-ml-_full02.jpg"
-          />
-        </div>
-        <p class="font-semibold text-lg my-2 text-red-700 text-center">
-          Rp.8.000
-        </p>
-        <p class="font-light text-sm text-center">Obat Sakit Gigi Ponstan</p>
-        <button
-          type="button"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-        >
-          Beli sekarang
-        </button>
-        <button
-          type="button"
-          class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-        >
-          Tambah Keranjang
-        </button>
-      </div>
-      <!-- produk 4-->
-      <div
-        class="hover:scale-105 flex flex-col p-2 bg-white shadow-lg cursor-pointer rounded transform duration-300 ease-in-out"
-      >
-        <div classs="flex justify-center">
-          <img
-            class="mx-4"
-            width="200"
-            src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//81/MTA-12426111/novell_novell-cooling-5-spray-cool-mint-obat-sariawan-dan-sakit-tenggorokan--15-ml-_full02.jpg"
-          />
-        </div>
-        <p class="font-semibold text-lg my-2 text-red-700 text-center">
-          Rp.8.000
-        </p>
-        <p class="font-light text-sm text-center">Obat Sakit Gigi Ponstan</p>
-        <button
-          type="button"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-        >
-          Beli sekarang
-        </button>
-        <button
-          type="button"
-          class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-        >
-          Tambah Keranjang
-        </button>
-      </div>
-      <!-- produk 5-->
-      <div
-        class="hover:scale-105 flex flex-col p-2 bg-white shadow-lg cursor-pointer rounded transform duration-300 ease-in-out"
-      >
-        <div classs="flex justify-center">
-          <img
-            class="mx-4"
-            width="200"
-            src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//81/MTA-12426111/novell_novell-cooling-5-spray-cool-mint-obat-sariawan-dan-sakit-tenggorokan--15-ml-_full02.jpg"
-          />
-        </div>
-        <p class="font-semibold text-lg my-2 text-red-700 text-center">
-          Rp.8.000
-        </p>
-        <p class="font-light text-sm text-center">Obat Sakit Gigi Ponstan</p>
-        <button
-          type="button"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-        >
-          Beli sekarang
-        </button>
-        <button
-          type="button"
-          class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-        >
-          Tambah Keranjang
-        </button>
-      </div>
+     
     </div>
   </main>
 </template>
