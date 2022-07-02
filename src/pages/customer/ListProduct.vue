@@ -1,13 +1,24 @@
 <script setup>
-import keranjang from "../../assets/keranjang.svg";
-import { ref } from "vue";
 import Protect from "../../assets/illustration/protect.png";
+import keranjang from "../../assets/keranjang.svg";
+import { supabase } from "../../supabase";
+import { useRoute } from "vue-router";
+import { ref, onMounted } from "vue";
+const route = useRoute();
+const id = route.params.id;
+const users = ref();
+const getUsers = async () => {
+  const { data } = await supabase.from("user").select("*").eq("id", id);
+  const username = data?.map(x => x.name)
+  users.value = username
+};
+
+onMounted(() => {
+  getUsers();
+});
 
 const isDropdownShow = ref(false);
-console.log(isDropdownShow.value);
-
 const isUserMenu = ref(false);
-console.log(isUserMenu.value);
 </script>
 
 <template>
@@ -105,7 +116,7 @@ console.log(isUserMenu.value);
         class="inline-flex items-center px-5 py-3 mb-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg md:mb-0 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         type="button"
       >
-        User
+        {{users[0]}}
         <svg
           class="w-5 h-5 ml-2"
           fill="none"
@@ -126,7 +137,7 @@ console.log(isUserMenu.value);
       <div
         v-if="isUserMenu"
         id="dropdownLarge"
-        class="z-10 bg-white fixed top-25 left-285 divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+        class="z-10 bg-white absolute top-25 left-285 divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
       >
         <ul
           class="py-1 text-sm text-gray-700 dark:text-gray-200"
@@ -300,3 +311,4 @@ console.log(isUserMenu.value);
     </div>
   </main>
 </template>
+

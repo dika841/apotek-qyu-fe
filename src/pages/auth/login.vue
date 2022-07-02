@@ -1,5 +1,38 @@
-<script setup>
-import login from "../../assets/illustration/Login.png";
+<script setup lang="ts">
+import  gambar from "../../assets/illustration/Login.png"
+import { supabase } from "../../supabase";
+import { router } from "../../router";
+import Swal from "sweetalert2";
+import { useRoute } from "vue-router";
+import { ref, reactive } from "vue";
+const route = useRoute();
+const id = route.params.id;
+const users = ref([]);
+const login = reactive({
+  email: "",
+  password: "",
+});
+const submit = async () => {
+  try {
+    const { data, error } = await supabase
+      .from("user")
+      .select("*")
+      .eq("email", login.email);
+    users.value = data;
+    console.log(users.value[0].role);
+    if (users.value[0].role === "admin") {
+     
+    } else if (users.value[0].role === "user") {
+    router.push('/customer/'+ users.value[0].id);
+    } else {
+      Swal.fire("Pemberitahuan", "Data Tidak Ditemukan", "warning");
+    }
+    if (error) throw error;
+  } catch (error: any) {
+    console.log(error);
+    Swal.fire("Error :(", `${error.message}`, "error");
+  }
+};
 </script>
 
 <template>
@@ -11,7 +44,7 @@ import login from "../../assets/illustration/Login.png";
         <div
           class="grow-0 bg-blue-300 shrink-1 md:shrink-0 basis-auto xl:w-6/12 lg:w-6/12 md:w-9/12 mb-12 md:mb-0"
         >
-          <img height="380" :src="login" alt="" />
+          <img height="380" :src="gambar" alt="" />
         </div>
         <div class="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0 pr-24">
           <form>
@@ -89,6 +122,7 @@ import login from "../../assets/illustration/Login.png";
             <!-- Email input -->
             <div class="mb-6">
               <input
+                v-model="login.email"
                 type="text"
                 class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 id="exampleFormControlInput2"
@@ -99,6 +133,7 @@ import login from "../../assets/illustration/Login.png";
             <!-- Password input -->
             <div class="mb-6">
               <input
+                v-model="login.password"
                 type="password"
                 class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 id="exampleFormControlInput2"
@@ -123,14 +158,14 @@ import login from "../../assets/illustration/Login.png";
             </div>
 
             <div class="text-center lg:text-left">
-              <router-link to="/customer">
-                <button
-                  type="button"
-                  class="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-                >
-                  Login
-                </button>
-              </router-link>
+              
+              <button @click="submit()"
+                type="button"
+                class="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+              >
+                Login
+              </button>
+             
               <p class="text-sm font-semibold mt-2 pt-1 mb-0">
                 Belum punya akun ?
                 <router-link to="/register">

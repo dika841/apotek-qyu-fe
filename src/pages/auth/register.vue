@@ -1,5 +1,40 @@
-<script setup>
+<script setup lang="ts">
 import  register from "../../assets/illustration/Register.svg"
+import { supabase } from "../../supabase";
+import Swal from "sweetalert2";
+import { reactive } from "vue";
+
+const signUp = reactive({
+    email : "",
+    nama : "",
+    password : "",
+});
+
+const clearForm = () => {
+    signUp.email = "";
+    signUp.nama = "";
+    signUp.password = "";
+};
+const submitData = async () => {
+  try {
+    const { error } = await supabase.from("user").insert([
+      {
+        email: signUp.email,
+        name: signUp.nama,
+        password: signUp.password,
+      },
+    ]);
+    clearForm();
+    if (error) throw error;
+    Swal.fire("Terimakasih", "Terimakasih atas Partisipasi nya", "success");
+  } catch (error: any) {
+    console.log(error);
+    Swal.fire("Error :(", `${error.message}`, "error");
+  }
+};
+
+
+
 
 </script>
 
@@ -21,7 +56,7 @@ import  register from "../../assets/illustration/Register.svg"
                             <label for="" class="text-xs font-semibold px-1">Name</label>
                             <div class="flex">
                                 <div class="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i class="mdi mdi-account-outline text-gray-400 text-lg"></i></div>
-                                <input type="text" placeholder="Masukkan Nama anda" class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500">
+                                <input v-model="signUp.nama" type="text" placeholder="Masukkan Nama anda" class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500">
                             </div>
                         </div>
                         
@@ -31,7 +66,7 @@ import  register from "../../assets/illustration/Register.svg"
                             <label for="" class="text-xs font-semibold px-1">Email</label>
                             <div class="flex">
                                 <div class="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i class="mdi mdi-email-outline text-gray-400 text-lg"></i></div>
-                                <input type="email" placeholder="Masukkan Email anda" class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500">
+                                <input v-model="signUp.email" type="email" placeholder="Masukkan Email anda" class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500">
                             </div>
                         </div>
                     </div>
@@ -40,7 +75,7 @@ import  register from "../../assets/illustration/Register.svg"
                             <label for="" class="text-xs font-semibold px-1">Password</label>
                             <div class="flex">
                                 <div class="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i class="mdi mdi-lock-outline text-gray-400 text-lg"></i></div>
-                                <input type="password" placeholder="Masukkan Password anda" class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500">
+                                <input v-model="signUp.password" type="password" placeholder="Masukkan Password anda" class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500">
                             </div>
                         </div>
                     </div>
@@ -55,7 +90,8 @@ import  register from "../../assets/illustration/Register.svg"
                     </div>
                     <div class="flex -mx-3">
                         <div class="w-full px-3 mb-5">
-                            <button class="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold">REGISTER NOW</button>
+                            
+                            <button @click="submitData()" class="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold">REGISTER NOW</button>
                             
                         </div>
                     </div>
