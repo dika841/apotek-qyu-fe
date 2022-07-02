@@ -1,40 +1,302 @@
 <script setup>
-import  keranjang from "../../assets/keranjang.svg"
+import keranjang from "../../assets/keranjang.svg";
+import { ref } from "vue";
+import Protect from "../../assets/illustration/protect.png";
 
+const isDropdownShow = ref(false);
+console.log(isDropdownShow.value);
+
+const isUserMenu = ref(false);
+console.log(isUserMenu.value);
 </script>
 
 <template>
-<main class="mx-20 my-8">
-  <div class="my-8 justify-between flex gap-4">
-        <h1 class="w-1/4 font-bold">Apotek-qyu</h1>
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
-  Kategori
-</button>
-        <input type="text" class=" form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Search">
-        <span class="input-group-text flex items-center px-3 py-1.5 text-base font-normal text-gray-700 text-center whitespace-nowrap rounded" id="basic-addon2">
-         <img width="60" height="380" :src="keranjang" alt="" />
+  <main class="mx-20 my-8">
+    <div class="my-8 justify-between flex gap-4">
+      <div class="flex gap-x-2 items-center pr-19">
+        <img width="60" :src="Protect" alt="" />
+        <span class="text-1xl font-bold text-black-800">ApoteQyu</span>
+      </div>
+      <button
+        @click="isDropdownShow = !isDropdownShow"
+        id="dropdownLargeButton"
+        data-dropdown-toggle="dropdownLarge"
+        class="inline-flex items-center px-5 py-3 mb-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg md:mb-0 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        type="button"
+      >
+        Kategori
+        <svg
+          class="w-5 h-5 ml-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+      </button>
+
+      <!-- Dropdown menu -->
+      <div
+        v-if="isDropdownShow"
+        id="dropdownLarge"
+        class="z-10 bg-white fixed top-25 left-60 divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+      >
+        <ul
+          class="py-1 text-sm text-gray-700 dark:text-gray-200"
+          aria-labelledby="dropdownLargeButton"
+        >
+          <li>
+            <a
+              href="#"
+              class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              >Herbal</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              >Obat&Flu dan Batuk</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              >Obat Anak</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              >Ibu Hamil</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+            ></a>
+          </li>
+        </ul>
+      </div>
+      <input
+        type="text"
+        class="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+        placeholder="Search"
+      />
+      <span
+        class="input-group-text flex items-center px-3 py-1.5 text-base font-normal text-gray-700 text-center whitespace-nowrap rounded cursor-pointer"
+        id="basic-addon2"
+      >
+        <img width="60" height="380" :src="keranjang" alt="" />
       </span>
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
-  User
-</button>
+      <button
+        @click="isUserMenu = !isUserMenu"
+        id="dropdownLargeButton"
+        data-dropdown-toggle="dropdownLarge"
+        class="inline-flex items-center px-5 py-3 mb-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg md:mb-0 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        type="button"
+      >
+        User
+        <svg
+          class="w-5 h-5 ml-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+      </button>
+
+      <!-- Dropdown menu -->
+      <div
+        v-if="isUserMenu"
+        id="dropdownLarge"
+        class="z-10 bg-white fixed top-25 left-285 divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+      >
+        <ul
+          class="py-1 text-sm text-gray-700 dark:text-gray-200"
+          aria-labelledby="dropdownLargeButton"
+        >
+          <li>
+            <a
+              href="#"
+              class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              >Profile</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              >Pengaturan Akun</a
+            >
+          </li>
+        </ul>
+        <div class="py-1">
+          <a
+            href="#"
+            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+            >Sign out</a
+          >
+        </div>
       </div>
-       <div class="grid grid-cols-4 gap-5">
-      <div class="hover:scale-105 flex flex-col p-2 bg-white shadow-lg cursor-pointer rounded transform duration-300 ease-in-out">
-          <div classs="flex justify-cente">
-            <img class="mx-4" width="200" src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//81/MTA-12426111/novell_novell-cooling-5-spray-cool-mint-obat-sariawan-dan-sakit-tenggorokan--15-ml-_full02.jpg"/>
-          </div>
-          <p class="font-semibold text-lg my-2 text-red-700 text-center">Rp.20.000</p>
-          <p class="font-light text-sm text-center ">Obat Sakit Gigi Ponstan</p>
-          <button class=" mt-auto block bg-yellow-300 px-2 text-gray-600 text-center text-sm rounded shadow-lg uppercase mt-6 hover:bg-green-400">Tambah Keranjang</button>
+    </div>
+    <div class="grid grid-cols-4 gap-5 mt-40">
+      <!-- produk 1-->
+      <div
+        class="hover:scale-105 flex flex-col p-2 bg-white shadow-lg cursor-pointer rounded transform duration-300 ease-in-out"
+      >
+        <div classs="flex justify-center">
+          <img
+            class="mx-4"
+            width="200"
+            src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//81/MTA-12426111/novell_novell-cooling-5-spray-cool-mint-obat-sariawan-dan-sakit-tenggorokan--15-ml-_full02.jpg"
+          />
+        </div>
+        <p class="font-semibold text-lg my-2 text-red-700 text-center">
+          Rp.20.000
+        </p>
+        <p class="font-light text-sm text-center">Obat Sakit Gigi Ponstan</p>
+        <button
+          type="button"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+        >
+          Beli sekarang
+        </button>
+        <button
+          type="button"
+          class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+        >
+          Tambah Keranjang
+        </button>
       </div>
-       <div class="hover:scale-105 flex flex-col p-2 bg-white shadow-lg cursor-pointer rounded transform duration-300 ease-in-out">
-          <div classs="flex justify-cente">
-            <img class="mx-8" width="200" src="https://cf.shopee.co.id/file/27f01c1310e3a4b695a139a9e1e7f576"/>
-          </div>
-          <p class="font-semibold text-lg my-2 text-red-700 text-center">Rp.8.000</p>
-          <p class="font-light text-sm text-center my-2 ">Obat Sakit Gigi Ponstan</p>
-          <button class=" mt-auto block bg-yellow-300 px-2 text-gray-600 text-center text-sm rounded shadow-lg uppercase mt-6 hover:bg-green-400">Tambah keranjang</button>
+      <!-- produk 2-->
+      <div
+        class="hover:scale-105 flex flex-col p-2 bg-white shadow-lg cursor-pointer rounded transform duration-300 ease-in-out"
+      >
+        <div classs="flex justify-center">
+          <img
+            class="mx-4"
+            width="200"
+            src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//81/MTA-12426111/novell_novell-cooling-5-spray-cool-mint-obat-sariawan-dan-sakit-tenggorokan--15-ml-_full02.jpg"
+          />
+        </div>
+        <p class="font-semibold text-lg my-2 text-red-700 text-center">
+          Rp.8.000
+        </p>
+        <p class="font-light text-sm text-center">Obat Sakit Gigi Ponstan</p>
+        <button
+          type="button"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+        >
+          Beli sekarang
+        </button>
+        <button
+          type="button"
+          class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+        >
+          Tambah Keranjang
+        </button>
       </div>
-</div>
-</main>
+      <!-- produk 3-->
+      <div
+        class="hover:scale-105 flex flex-col p-2 bg-white shadow-lg cursor-pointer rounded transform duration-300 ease-in-out"
+      >
+        <div classs="flex justify-center">
+          <img
+            class="mx-4"
+            width="200"
+            src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//81/MTA-12426111/novell_novell-cooling-5-spray-cool-mint-obat-sariawan-dan-sakit-tenggorokan--15-ml-_full02.jpg"
+          />
+        </div>
+        <p class="font-semibold text-lg my-2 text-red-700 text-center">
+          Rp.8.000
+        </p>
+        <p class="font-light text-sm text-center">Obat Sakit Gigi Ponstan</p>
+        <button
+          type="button"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+        >
+          Beli sekarang
+        </button>
+        <button
+          type="button"
+          class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+        >
+          Tambah Keranjang
+        </button>
+      </div>
+      <!-- produk 4-->
+      <div
+        class="hover:scale-105 flex flex-col p-2 bg-white shadow-lg cursor-pointer rounded transform duration-300 ease-in-out"
+      >
+        <div classs="flex justify-center">
+          <img
+            class="mx-4"
+            width="200"
+            src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//81/MTA-12426111/novell_novell-cooling-5-spray-cool-mint-obat-sariawan-dan-sakit-tenggorokan--15-ml-_full02.jpg"
+          />
+        </div>
+        <p class="font-semibold text-lg my-2 text-red-700 text-center">
+          Rp.8.000
+        </p>
+        <p class="font-light text-sm text-center">Obat Sakit Gigi Ponstan</p>
+        <button
+          type="button"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+        >
+          Beli sekarang
+        </button>
+        <button
+          type="button"
+          class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+        >
+          Tambah Keranjang
+        </button>
+      </div>
+      <!-- produk 5-->
+      <div
+        class="hover:scale-105 flex flex-col p-2 bg-white shadow-lg cursor-pointer rounded transform duration-300 ease-in-out"
+      >
+        <div classs="flex justify-center">
+          <img
+            class="mx-4"
+            width="200"
+            src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//81/MTA-12426111/novell_novell-cooling-5-spray-cool-mint-obat-sariawan-dan-sakit-tenggorokan--15-ml-_full02.jpg"
+          />
+        </div>
+        <p class="font-semibold text-lg my-2 text-red-700 text-center">
+          Rp.8.000
+        </p>
+        <p class="font-light text-sm text-center">Obat Sakit Gigi Ponstan</p>
+        <button
+          type="button"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+        >
+          Beli sekarang
+        </button>
+        <button
+          type="button"
+          class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+        >
+          Tambah Keranjang
+        </button>
+      </div>
+    </div>
+  </main>
 </template>
