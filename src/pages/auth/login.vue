@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup >
 import  gambar from "../../assets/illustration/Login.png"
 import { supabase } from "../../supabase";
 import { router } from "../../router";
@@ -28,7 +28,7 @@ const submit = async () => {
       Swal.fire("Pemberitahuan", "Data Tidak Ditemukan", "warning");
     }
     if (error) throw error;
-  } catch (error: any) {
+  } catch (error) {
     console.log(error);
     Swal.fire("Error :(", `${error.message}`, "error");
   }
