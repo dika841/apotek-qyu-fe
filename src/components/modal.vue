@@ -1,7 +1,7 @@
 <script setup>
-const emit = defineEmits(["close"]);
-const closeModal = () => {
-  emit("close");
+const emit = defineEmits(["hide"]);
+const hideModal = () => {
+  emit("hide");
   console.log("triger close");
 };
 </script>

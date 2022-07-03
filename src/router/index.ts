@@ -4,6 +4,7 @@ import Login from "../pages/auth/login.vue";
 import Register from "../pages/auth/register.vue";
 import Admin from "../pages/admin/index.vue";
 import Customer from "../pages/customer/ListProduct.vue";
+import checkout from "../pages/customer/checkout.vue";
 
 const routes = [
   {
@@ -25,6 +26,10 @@ const routes = [
   {
     path: "/customer/:id",
     component: Customer,
+  },
+  {
+    path: "/checkout",
+    component: checkout,
   },
 ];
 
