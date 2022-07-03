@@ -21,7 +21,7 @@ const submit = async () => {
     users.value = data;
     console.log(users.value[0].role);
     if (users.value[0].role === "admin") {
-     
+    router.push('/dashboard/');
     } else if (users.value[0].role === "user") {
     router.push('/customer/'+ users.value[0].id);
     } else {
