@@ -8,6 +8,9 @@ import Product from "../pages/admin/product.vue";
 import Pesanan from "../pages/admin/pesanan.vue";
 import Customer from "../pages/customer/ListProduct.vue";
 import Bayar from "../pages/customer/checkout.vue";
+import Profile from "../pages/customer/profile.vue";
+import Change from "../pages/customer/changePW.vue";
+import Order from "../pages/customer/order.vue";
 
 const routes = [
   {
@@ -45,6 +48,18 @@ const routes = [
   {
     path: "/bayar",
     component: Bayar,
+  },
+  {
+    path: "/profile",
+    component: Profile,
+  },
+  {
+    path: "/changePW",
+    component: Change,
+  },
+  {
+    path: "/order",
+    component: Order,
   },
 ];
 

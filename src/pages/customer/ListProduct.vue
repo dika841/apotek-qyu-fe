@@ -1,7 +1,7 @@
 <script setup>
 import Protect from "../../assets/illustration/protect.png";
 import keranjang from "../../assets/keranjang.svg";
-import ModalKeranjang from '../../components/keranjang.vue'
+import ModalKeranjang from "../../components/keranjang.vue";
 import deskripsi from "../../components/deskripsi.vue";
 import { supabase } from "../../supabase";
 import { ref, onMounted } from "vue";
@@ -14,8 +14,8 @@ const getObat = async () => {
 const route = useRoute();
 const id = route.params.id;
 const users = ref("");
-const listBucket = ref([])
-const isBucketShow = ref(false)
+const listBucket = ref([]);
+const isBucketShow = ref(false);
 const getUsers = async () => {
   const { data } = await supabase.from("user").select("name").eq("id", id);
   const username = data.map((x) => x.name);
@@ -23,20 +23,20 @@ const getUsers = async () => {
 };
 const getBucket = async () => {
   const { data } = await supabase.from("obat").select("*").eq("isBucket", true);
-  listBucket.value = data
+  listBucket.value = data;
 };
 const setBucket = async (id) => {
   const data = {
-    isBucket: true 
-  }
-  await supabase.from("obat").update(data).eq("id", id)
-  getBucket()
+    isBucket: true,
+  };
+  await supabase.from("obat").update(data).eq("id", id);
+  getBucket();
 };
 
 const showBucket = () => {
-  getBucket()
-  isBucketShow.value = true
-}
+  getBucket();
+  isBucketShow.value = true;
+};
 const isDropdownShow = ref(false);
 const isUserMenu = ref(false);
 const isDeskripsiShow = ref(false);
@@ -143,7 +143,7 @@ onMounted(() => {
         placeholder="Search"
       />
       <span
-      @click="showBucket()"
+        @click="showBucket()"
         class="input-group-text flex items-center px-3 py-1.5 text-base font-normal text-gray-700 text-center whitespace-nowrap rounded cursor-pointer"
         id="basic-addon2"
       >
@@ -184,11 +184,13 @@ onMounted(() => {
           aria-labelledby="dropdownLargeButton"
         >
           <li>
-            <a
-              href="#"
-              class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-              >Pengaturan Akun</a
-            >
+            <router-link to="/profile">
+              <a
+                href="#"
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >Profile</a
+              >
+            </router-link>
           </li>
         </ul>
         <div class="py-1">
@@ -222,12 +224,12 @@ onMounted(() => {
         </p>
         <p class="font-light text-sm text-center">{{ data.nama_obat }}</p>
         <router-link to="/bayar">
-        <button
-          type="button"
-          class="text-white w-full bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-        >
-          Beli sekarang
-        </button>
+          <button
+            type="button"
+            class="text-white w-full bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+          >
+            Beli sekarang
+          </button>
         </router-link>
         <button
           @click="setBucket(data.id)"
@@ -247,6 +249,10 @@ onMounted(() => {
       :stok-obat="stokObat"
       @close="isDeskripsiShow = false"
     />
-    <ModalKeranjang v-if="isBucketShow" @close="isBucketShow = false" :items="listBucket"/>
+    <ModalKeranjang
+      v-if="isBucketShow"
+      @close="isBucketShow = false"
+      :items="listBucket"
+    />
   </main>
 </template>
