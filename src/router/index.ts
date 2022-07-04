@@ -7,6 +7,7 @@ import User from "../pages/admin/user.vue";
 import Product from "../pages/admin/product.vue";
 import Pesanan from "../pages/admin/pesanan.vue";
 import Customer from "../pages/customer/ListProduct.vue";
+import Bayar from "../pages/customer/checkout.vue";
 
 const routes = [
   {
@@ -40,6 +41,10 @@ const routes = [
   {
     path: "/customer/:id",
     component: Customer,
+  },
+  {
+    path: "/bayar",
+    component: Bayar,
   },
 ];
 
