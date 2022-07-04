@@ -12,6 +12,11 @@ const login = reactive({
   email: "",
   password: "",
 });
+
+const clearForm = () => {
+  login.email= "";
+  login.password= "";
+}
 const submit = async () => {
   try {
     const { data, error } = await supabase
@@ -21,17 +26,20 @@ const submit = async () => {
     users.value = data;
     console.log(users.value[0].role);
     if (users.value[0].role === "admin") {
-    router.push('/dashboard/');
-    } else if (users.value[0].role === "user") {
+    router.push('/dashboard');
+    } else if (users.value[0].role=== "user") {
     router.push('/customer/'+ users.value[0].id);
     } else {
       Swal.fire("Pemberitahuan", "Data Tidak Ditemukan", "warning");
     }
+    clearForm();
     if (error) throw error;
+   
   } catch (error) {
     console.log(error);
     Swal.fire("Error :(", `${error.message}`, "error");
   }
+
 };
 </script>
 

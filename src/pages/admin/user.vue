@@ -27,8 +27,7 @@ const users = ref({});
 const getUsers = async () => {
   const { data, error } = await supabase
     .from("user")
-    .select("*")
-    .eq("role", "user");
+    .select("*");
   users.value = data;
 };
 //define
@@ -152,7 +151,6 @@ onMounted(() => {
             />
           </div>
         </div>
-
       </form>
     </Modal>
     <div class="h-25 w-full bg-white">
