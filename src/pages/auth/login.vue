@@ -1,8 +1,9 @@
-<script setup >
-import  gambar from "../../assets/illustration/Login.png"
+<script setup>
+import gambar from "../../assets/illustration/Login.png";
 import { supabase } from "../../supabase";
 import { router } from "../../router";
 import Swal from "sweetalert2";
+import Loading from "../../components/loading.vue";
 import { useRoute } from "vue-router";
 import { ref, reactive } from "vue";
 const route = useRoute();
@@ -12,13 +13,15 @@ const login = reactive({
   email: "",
   password: "",
 });
+const isLoading = ref(false);
 
 const clearForm = () => {
-  login.email= "";
-  login.password= "";
-}
+  login.email = "";
+  login.password = "";
+};
 const submit = async () => {
   try {
+    isLoading.value = true;
     const { data, error } = await supabase
       .from("user")
       .select("*")
@@ -26,20 +29,20 @@ const submit = async () => {
     users.value = data;
     console.log(users.value[0].role);
     if (users.value[0].role === "admin") {
-    router.push('/dashboard');
-    } else if (users.value[0].role=== "user") {
-    router.push('/customer/'+ users.value[0].id);
+      router.push("/dashboard");
+    } else if (users.value[0].role === "user") {
+      router.push("/customer/" + users.value[0].id);
     } else {
       Swal.fire("Pemberitahuan", "Data Tidak Ditemukan", "warning");
     }
+    isLoading.value = false;
     clearForm();
     if (error) throw error;
-   
   } catch (error) {
     console.log(error);
     Swal.fire("Error :(", `${error.message}`, "error");
+    isLoading.value = false;
   }
-
 };
 </script>
 
@@ -166,14 +169,14 @@ const submit = async () => {
             </div>
 
             <div class="text-center lg:text-left">
-              
-              <button @click="submit()"
+              <button
+                @click="submit()"
                 type="button"
                 class="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
               >
                 Login
               </button>
-             
+
               <p class="text-sm font-semibold mt-2 pt-1 mb-0">
                 Belum punya akun ?
                 <router-link to="/register">
@@ -190,4 +193,5 @@ const submit = async () => {
       </div>
     </div>
   </section>
+  <Loading v-if="isLoading" />
 </template>

@@ -1,22 +1,25 @@
 <script setup>
 import Protect from "../../assets/illustration/protect.png";
 import keranjang from "../../assets/keranjang.svg";
-import ModalKeranjang from '../../components/keranjang.vue'
+import ModalKeranjang from "../../components/keranjang.vue";
 import deskripsi from "../../components/deskripsi.vue";
 import { supabase } from "../../supabase";
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import Loading from "../../components/loading.vue";
 const obat = ref({});
 const getObat = async () => {
+  isLoading.value = true;
   const { data } = await supabase.from("obat").select("*");
   obat.value = data;
+  isLoading.value = false;
 };
 const route = useRoute();
 const id = route.params.id;
 const users = ref("");
-const listBucket = ref([])
-const isBucketShow = ref(false)
-const qty = ref(0)
+const listBucket = ref([]);
+const isBucketShow = ref(false);
+const qty = ref(0);
 const getUsers = async () => {
   const { data } = await supabase.from("user").select("name").eq("id", id);
   const username = data.map((x) => x.name);
@@ -24,25 +27,24 @@ const getUsers = async () => {
 };
 const getBucket = async () => {
   const { data } = await supabase.from("obat").select("*").eq("isBucket", true);
-  listBucket.value = data
+  listBucket.value = data;
 };
 const setBucket = async (id) => {
   const data = {
-    isBucket: true 
-  }
-  await supabase.from("obat").update(data).eq("id", id)
-  getBucket()
+    isBucket: true,
+  };
+  await supabase.from("obat").update(data).eq("id", id);
+  getBucket();
 };
 
-
-
 const showBucket = () => {
-  getBucket()
-  isBucketShow.value = true
-}
+  getBucket();
+  isBucketShow.value = true;
+};
 const isDropdownShow = ref(false);
 const isUserMenu = ref(false);
 const isDeskripsiShow = ref(false);
+const isLoading = ref(false);
 const namaObat = ref("");
 const hargaObat = ref("");
 const stokObat = ref("");
@@ -147,7 +149,7 @@ onMounted(() => {
         placeholder="Search"
       />
       <span
-      @click="showBucket()"
+        @click="showBucket()"
         class="input-group-text flex items-center px-3 py-1.5 text-base font-normal text-gray-700 text-center whitespace-nowrap rounded cursor-pointer"
         id="basic-addon2"
       >
@@ -189,10 +191,11 @@ onMounted(() => {
         >
           <li>
             <router-link to="/profil">
-            <a
-              href="#"
-              class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-              >Profil</a>
+              <a
+                href="#"
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >Profil</a
+              >
             </router-link>
           </li>
         </ul>
@@ -228,12 +231,12 @@ onMounted(() => {
         <p class="font-light text-sm text-center">{{ data.nama_obat }}</p>
 
         <router-link to="/bayar">
-        <button
-          type="button"
-          class="text-white w-full bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-        >
-          Beli sekarang
-        </button>
+          <button
+            type="button"
+            class="text-white w-full bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+          >
+            Beli sekarang
+          </button>
         </router-link>
         <button
           @click="setBucket(data.id)"
@@ -255,12 +258,12 @@ onMounted(() => {
       @inc="stokObat > qty ? qty++ : qty"
       @dec="qty === 0 ? 0 : qty--"
       @close="isDeskripsiShow = false"
-      
     />
     <ModalKeranjang
-     v-if="isBucketShow"
+      v-if="isBucketShow"
       :items="listBucket"
-     @close="isBucketShow = false"
-      />
+      @close="isBucketShow = false"
+    />
   </main>
-</template> 
+  <Loading v-if="isLoading" />
+</template>
