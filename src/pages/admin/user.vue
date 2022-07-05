@@ -5,7 +5,11 @@ import Edit from "../../assets/edit.png";
 import { supabase } from "../../supabase";
 import { ref, onMounted } from "vue";
 import Modal from "../../components/editModal.vue";
+import Loading from "../../components/loading.vue";
 import Swal from "sweetalert2";
+
+//show loading
+const isLoading = ref(false);
 //show modal
 const isModalShow = ref(false);
 const showModal = () => {
@@ -25,10 +29,10 @@ const clearForm = () => {
 //get all user
 const users = ref({});
 const getUsers = async () => {
-  const { data, error } = await supabase
-    .from("user")
-    .select("*");
+  isLoading.value = true;
+  const { data, error } = await supabase.from("user").select("*");
   users.value = data;
+  isLoading.value = false;
 };
 //define
 const idUser = ref("");
@@ -111,8 +115,6 @@ const addUsers = async () => {
   }
 };
 
-
-
 onMounted(() => {
   getUsers();
 });
@@ -181,53 +183,65 @@ onMounted(() => {
     </Modal>
     <div class="h-25 w-full bg-white">
       <div class="flex justify-between">
-      <h1 class="my-8 mx-5 text-[32px]">Daftar User</h1>
-    <hr>
-      <button @click="addUsers(user.id)" class="mx-8 mr-10 mt-4 flex justify-end  max-w-xs h-14 mx-auto bg-indigo-400 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold">Tambah User</button>
-    </div>
-    <div class="w-full h-screen text-white">
-      <div class="flex items-center justify-center p-20">
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table class="w-full text-lg text-left">
-            <thead class="uppercase bg-blue-300">
-              <th scope="col" class="px-6 py-3">NO.</th>
-              <th scope="col" class="px-6 py-3">email</th>
-              <th scope="col" class="px-6 py-3">nama</th>
-              <th scope="col" class="px-6 py-3">password</th>
-              <th scope="col" class="px-6 py-3">aksi</th>
-            </thead>
-            <tbody
-               v-if="!isLoading"
-              class="text-black bg-white"
-              v-for="(user, index) in users"
-              :key="users.id"
-            >
-              <tr class="bg-white border-b dark:border-gray-700">
-                <td class="px-6 py-4">{{ index + 1 }}</td>
-                <td class="px-6 py-4 uppercase">{{ user.email }}</td>
-                <td class="px-6 py-4 uppercase">{{ user.name }}</td>
-                <td class="px-6 py-4 uppercase">{{ user.password }}</td>
-                <td class="px-6 py-4 mr-5">
-                <div class="flex gap-4">
-                  <img  @click="edit(user.id)" width="20" :src="Edit" alt="" />
-                  <img @click="deleteUsers(user.id)" width="20" :src="Delete" alt="" />
-                </div>
-                </td>
-              </tr>
-            </tbody>
-             <tbody
-               v-else
-              class="text-black bg-white"
-              
-            >
-              <tr class="bg-white border-b dark:border-gray-700">
-                <td class="px-6 py-4 text-center">Sedang Memuat Data....</td>
-              </tr>
-            </tbody>
-          </table>
+        <h1 class="my-8 mx-5 text-[32px]">Daftar User</h1>
+        <hr />
+        <button
+          @click="addUsers(user.id)"
+          class="mx-8 mr-10 mt-4 flex justify-end max-w-xs h-14 mx-auto bg-indigo-400 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold"
+        >
+          Tambah User
+        </button>
+      </div>
+      <div class="w-full h-screen text-white">
+        <div class="flex items-center justify-center p-20">
+          <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-lg text-left">
+              <thead class="uppercase bg-blue-300">
+                <th scope="col" class="px-6 py-3">NO.</th>
+                <th scope="col" class="px-6 py-3">email</th>
+                <th scope="col" class="px-6 py-3">nama</th>
+                <th scope="col" class="px-6 py-3">password</th>
+                <th scope="col" class="px-6 py-3">aksi</th>
+              </thead>
+              <tbody
+                v-if="!isLoading"
+                class="text-black bg-white"
+                v-for="(user, index) in users"
+                :key="users.id"
+              >
+                <tr class="bg-white border-b dark:border-gray-700">
+                  <td class="px-6 py-4">{{ index + 1 }}</td>
+                  <td class="px-6 py-4 uppercase">{{ user.email }}</td>
+                  <td class="px-6 py-4 uppercase">{{ user.name }}</td>
+                  <td class="px-6 py-4 uppercase">{{ user.password }}</td>
+                  <td class="px-6 py-4 mr-5">
+                    <div class="flex gap-4">
+                      <img
+                        @click="edit(user.id)"
+                        width="20"
+                        :src="Edit"
+                        alt=""
+                      />
+                      <img
+                        @click="deleteUsers(user.id)"
+                        width="20"
+                        :src="Delete"
+                        alt=""
+                      />
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody v-else class="text-black bg-white">
+                <tr class="bg-white border-b dark:border-gray-700">
+                  <td class="px-6 py-4 text-center">Sedang Memuat Data....</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        </div>
         </div>
       </div>
     </div>
+  </div>
+  <Loading v-if="isLoading" />
 </template>
