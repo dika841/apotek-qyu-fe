@@ -12,6 +12,8 @@ import Swal from "sweetalert2";
 const isLoading = ref(false);
 //show modal
 const isModalShow = ref(false);
+const isAddModalShow = ref(false);
+
 const showModal = () => {
   isModalShow.value = true;
 };
@@ -53,6 +55,25 @@ const updateData = async (id) => {
     clearForm();
     closeModal();
     getUsers();
+  } catch (error) {
+    console.log(error);
+    Swal.fire("Error :(", `${error.message}`, "error");
+  }
+};
+
+const addData = async () => {
+  try {
+    const data = {
+      name: nama.value,
+      email: email.value,
+      password: password.value,
+    };
+    const { error } = await supabase.from("user").insert(data);
+    if (error) throw error;
+    Swal.fire("Succes", "User Berhasil Di Tambah", "success");
+    clearForm();
+    getUsers();
+    isAddModalShow.value = false;
   } catch (error) {
     console.log(error);
     Swal.fire("Error :(", `${error.message}`, "error");
@@ -181,12 +202,71 @@ onMounted(() => {
         </div>
       </form>
     </Modal>
+    <Modal
+      v-if="isAddModalShow"
+      @cancel="isAddModalShow = false"
+      @submit="addData()"
+      title="Tambah Data"
+      cancel-text="Batal"
+      submit-text="Simpan"
+    >
+      <form @submit.prevent="addData()" class="w-full mr-40">
+        <div class="flex flex-wrap -mx-3 mb-6">
+          <div class="w-full px-3">
+            <label
+              class="flex justify-start text-gray-700 text-xs font-bold mb-2"
+              for="phoneNumber"
+            >
+              Nama
+            </label>
+            <input
+              v-model="nama"
+              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              id="phoneNumber"
+              type="text"
+            />
+          </div>
+        </div>
+        <div class="flex flex-wrap -mx-3 mb-6">
+          <div class="w-full px-3">
+            <label
+              class="flex justify-start text-gray-700 text-xs font-bold mb-2"
+              for="studentId"
+            >
+              Email
+            </label>
+            <input
+              v-model="email"
+              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              id="studentId"
+              type="text"
+            />
+          </div>
+        </div>
+        <div class="flex flex-wrap -mx-3 mb-6">
+          <div class="w-full px-3">
+            <label
+              class="flex justify-start text-gray-700 text-xs font-bold mb-2"
+              for="studentId"
+            >
+              Password
+            </label>
+            <input
+              v-model="password"
+              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              id="studentId"
+              type="text"
+            />
+          </div>
+        </div>
+      </form>
+    </Modal>
     <div class="h-25 w-full bg-white">
       <div class="flex justify-between">
         <h1 class="my-8 mx-5 text-[32px]">Daftar User</h1>
         <hr />
         <button
-          @click="addUsers(user.id)"
+          @click="isAddModalShow = true"
           class="mx-8 mr-10 mt-4 flex justify-end max-w-xs h-14 mx-auto bg-indigo-400 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold"
         >
           Tambah User

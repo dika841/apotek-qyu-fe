@@ -1,4 +1,5 @@
 <script setup>
+import Swal from "sweetalert2";
 import Protect from "../../assets/illustration/protect.png";
 import keranjang from "../../assets/keranjang.svg";
 import ModalKeranjang from "../../components/keranjang.vue";
@@ -35,6 +36,13 @@ const setBucket = async (id) => {
   };
   await supabase.from("obat").update(data).eq("id", id);
   getBucket();
+  Swal.fire({
+    position: "center",
+    icon: "success",
+    title: "Berhasil Menambah Ke Keranjang",
+    showConfirmButton: false,
+    timer: 1500,
+  });
 };
 
 const showBucket = () => {
