@@ -1,13 +1,34 @@
 <script setup>
+import { supabase } from '../supabase';
+import { ref} from "vue";
+const listBucket = ref([])
+const getBucket = async () => {
+  const { data } = await supabase.from("obat").select("*").eq("isBucket", true);
+  listBucket.value = data
+};
+
 const props = defineProps({
     items:[]
 })
 
-const emits =  defineEmits(['close'])
+const emits =  defineEmits(['close','unset'])
+
+const unset = () => {
+  emits('unset')
+}
 
 const closeModal = () => {
     emits('close')
 }
+
+const unsetBucket = async (id) => {
+  const data = {
+    isBucket: false 
+  }
+  await supabase.from("obat").update(data).eq("id", id)
+  getBucket()
+  emits('close')
+};
 
 
 </script>
@@ -41,14 +62,31 @@ const closeModal = () => {
                     </span>
                   </div>
               </div>
-              <span>{{item.harga}}</span>
+              <div class="flex items-center">
+
+                <span>{{item.harga}}</span>
+              <button
+                @click="unsetBucket(item.id)"
+                type="button"
+                class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+              >
+                Hapus
+              </button>
+              </div>
                </div>
               
             </div>
           </div>
         </div>
         <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-          <button @click="closeModal" type="button" class="w-full inline-flex justify-center rounded-md border border-transparent text-black border-black shadow-sm px-4 py-2 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">Close</button>
+          <button @click="closeModal" type="button" class="w-full inline-flex justify-center rounded border text-black-900 border-gray-600 px-4 py-2 text-base font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">Close</button>      
+          <router-link to="/bayar">
+          <button
+                type="button"
+                class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg- text-base font-medium text-gray-700 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                Beli
+              </button>  
+              </router-link>
         </div>
       </div>
     </div>

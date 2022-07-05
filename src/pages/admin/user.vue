@@ -87,6 +87,32 @@ const edit = async (id) => {
   password.value = data[0].password;
   showModal();
 };
+
+//addUser
+const addUsers = async () => {
+  try {
+    const { error } = await supabase.from("user").insert([
+      {
+        name: nama.value,
+        email: email.value,
+        password: password.value,
+      },
+    ]);
+    if (error) throw error;
+    Swal.fire(
+      "Selamat!",
+      "Selamat Anda Telah terdaftar di Makrab 2022",
+      "success"
+    );
+    closeModal();
+  } catch (error) {
+    console.log(error);
+    Swal.fire("Error :(", `${error.message}`, "error");
+  }
+};
+
+
+
 onMounted(() => {
   getUsers();
 });
@@ -157,7 +183,7 @@ onMounted(() => {
       <div class="flex justify-between">
       <h1 class="my-8 mx-5 text-[32px]">Daftar User</h1>
     <hr>
-      <button class="mx-8 mr-10 mt-4 flex justify-end  max-w-xs h-14 mx-auto bg-indigo-400 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold">Tambah User</button>
+      <button @click="addUsers(user.id)" class="mx-8 mr-10 mt-4 flex justify-end  max-w-xs h-14 mx-auto bg-indigo-400 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold">Tambah User</button>
     </div>
     <div class="w-full h-screen text-white">
       <div class="flex items-center justify-center p-20">

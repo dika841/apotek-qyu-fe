@@ -16,6 +16,7 @@ const id = route.params.id;
 const users = ref("");
 const listBucket = ref([])
 const isBucketShow = ref(false)
+const qty = ref(0)
 const getUsers = async () => {
   const { data } = await supabase.from("user").select("name").eq("id", id);
   const username = data.map((x) => x.name);
@@ -33,6 +34,8 @@ const setBucket = async (id) => {
   getBucket()
 };
 
+
+
 const showBucket = () => {
   getBucket()
   isBucketShow.value = true
@@ -43,6 +46,7 @@ const isDeskripsiShow = ref(false);
 const namaObat = ref("");
 const hargaObat = ref("");
 const stokObat = ref("");
+
 const deskripsiObat = ref("");
 const imageObat = ref("");
 const openDesc = (item) => {
@@ -184,11 +188,12 @@ onMounted(() => {
           aria-labelledby="dropdownLargeButton"
         >
           <li>
+            <router-link to="/profil">
             <a
               href="#"
               class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-              >Pengaturan Akun</a
-            >
+              >Profil</a>
+            </router-link>
           </li>
         </ul>
         <div class="py-1">
@@ -221,6 +226,7 @@ onMounted(() => {
           {{ data.harga }}
         </p>
         <p class="font-light text-sm text-center">{{ data.nama_obat }}</p>
+
         <router-link to="/bayar">
         <button
           type="button"
@@ -241,12 +247,20 @@ onMounted(() => {
     <deskripsi
       v-if="isDeskripsiShow"
       :nama-obat="namaObat"
-      :harga-obat="hargaObat"
+      :harga-obat="qty <= 1 ? hargaObat : hargaObat * qty"
       :deskripsi-obat="deskripsiObat"
       :image-obat="imageObat"
       :stok-obat="stokObat"
+      :qty-obat="qty"
+      @inc="stokObat > qty ? qty++ : qty"
+      @dec="qty === 0 ? 0 : qty--"
       @close="isDeskripsiShow = false"
+      
     />
-    <ModalKeranjang v-if="isBucketShow" @close="isBucketShow = false" :items="listBucket"/>
+    <ModalKeranjang
+     v-if="isBucketShow"
+      :items="listBucket"
+     @close="isBucketShow = false"
+      />
   </main>
-</template>
+</template> 
